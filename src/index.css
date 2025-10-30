@@ -23,36 +23,33 @@
   animation: float 3s ease-in-out infinite;
 }
 
-/* 💖 Custom component utility */
+/* 💖 Custom shimmer text effect */
 @layer components {
   .text-shimmer {
-    @apply bg-clip-text text-transparent bg-gradient-to-r from-rose-gold to-gold;
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-[--color-rose-gold] to-[--color-gold];
   }
 }
 
-/* 🌸 Tailwind v4 Theme Tokens */
+/* 🌸 Tailwind v4 Theme Variables */
 @theme {
-  colors: {
-    rose-gold: #b76e79;
-    soft-pink: #f9d5d3;
-    gold: #ffd700;
-    warm-brown: #4a2c2a;
-    sage: #a8c3a3;
-    cranberry: #b22222;
-  }
+  /* 🎨 Colors */
+  --color-rose-gold: #b76e79;
+  --color-soft-pink: #f9d5d3;
+  --color-gold: #ffd700;
+  --color-warm-brown: #4a2c2a;
+  --color-sage: #a8c3a3;
+  --color-cranberry: #b22222;
 
-  fontFamily: {
-    romantic: "Great Vibes", cursive;
-    body: "Poppins", sans-serif;
-  }
+  /* ✍️ Fonts */
+  --font-romantic: "Great Vibes", cursive;
+  --font-body: "Poppins", sans-serif;
 
-  backgroundImage: {
-    shimmer: linear-gradient(90deg, transparent, #ffd70040, transparent);
-  }
+  /* 🌅 Backgrounds */
+  --background-shimmer: linear-gradient(90deg, transparent, #ffd70040, transparent);
 }
 
 /* 🌷 Page base style */
 body {
-  @apply min-h-screen text-warm-brown font-body;
+  @apply min-h-screen font-body text-[--color-warm-brown];
   background: linear-gradient(to bottom, #fdf5f3, #c7b6a0);
 }
