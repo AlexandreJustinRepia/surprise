@@ -1,43 +1,60 @@
-import React from 'react';
-import { motion } from 'framer-motion';
-import ReactAudioPlayer from 'react-audio-player';
+'use client';
 
-const Hero = () => {
+import { motion } from "framer-motion";
+import { ChevronDown } from "lucide-react";
+
+export default function Hero() {
   return (
-    <section id="hero" className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-b from-soft-pink/30 to-white">
-      <div className="absolute inset-0 bg-[url('/snowflakes.png')] opacity-20 pointer-events-none"></div>
-
+    <section
+      className="relative flex flex-col justify-center h-screen overflow-hidden"
+      style={{
+        background: "linear-gradient(to bottom, rgba(247, 209, 205, 0.8) 0%, rgba(255, 248, 245, 0.8) 100%)",
+        backdropFilter: "blur(2px)",
+      }}
+    >
+      {/* Subtle shimmer overlay */}
       <motion.div
-        initial={{ opacity: 0, y: 50 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 1.2 }}
-        className="text-center z-10 px-6"
-      >
-        <h1 className="text-6xl md:text-8xl font-romantic text-rose-gold mb-4 shimmer">
-          Happy 2nd Anniversary
-        </h1>
-        <p className="text-xl md:text-2xl text-warm-brown font-body max-w-2xl mx-auto">
-          In our enchanted forest of love, every moment with you is pure magic.
-        </p>
+        className="absolute inset-0 opacity-25 pointer-events-none"
+        animate={{
+          background: [
+            "radial-gradient(circle at 30% 30%, rgba(247, 209, 205, 0.4), transparent 50%)",
+            "radial-gradient(circle at 70% 70%, rgba(247, 209, 205, 0.4), transparent 50%)",
+            "radial-gradient(circle at 30% 30%, rgba(247, 209, 205, 0.4), transparent 50%)",
+          ],
+        }}
+        transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
+      />
+
+      {/* Main Content */}
+      <div className="relative z-10 flex flex-col items-center justify-center h-full text-center px-6">
+        <motion.h1
+          initial={{ opacity: 0, y: 30, scale: 0.9 }}
+          animate={{ opacity: 1, y: 0, scale: 1 }}
+          transition={{ duration: 0.8, ease: "easeOut" }}
+          className="text-6xl md:text-7xl font-normal text-rose-700 mb-4"
+          style={{ fontFamily: "'Dancing Script', cursive" }}
+        >
+          Happy 2nd Anniversary!
+        </motion.h1>
+
+        <motion.p
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.6, ease: "easeOut" }}
+          className="text-xl md:text-2xl text-rose-800 font-medium"
+          style={{ fontFamily: "'Poppins', sans-serif" }}
+        >
+          Celebrating our love 🌸
+        </motion.p>
 
         <motion.div
-          animate={{ scale: [1, 1.2, 1] }}
-          transition={{ repeat: Infinity, duration: 2 }}
-          className="mt-8 inline-block"
+          animate={{ y: [0, 8, 0] }}
+          transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+          className="mt-12"
         >
-          <span className="text-6xl">Heart</span>
+          <ChevronDown className="w-8 h-8 text-rose-600" />
         </motion.div>
-      </motion.div>
-
-      <ReactAudioPlayer
-        src="/assets/music/anniversary-piano.mp3"
-        autoPlay
-        loop
-        volume={0.3}
-        className="hidden"
-      />
+      </div>
     </section>
   );
-};
-
-export default Hero;
+}

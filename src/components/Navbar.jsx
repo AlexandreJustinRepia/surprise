@@ -1,84 +1,113 @@
-import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, X } from 'lucide-react';
+import { useEffect, useState } from "react";
+import { motion } from "framer-motion";
+import { Menu, X } from "lucide-react";
 
-const navItems = [
-  { label: 'Home', id: 'hero' },
-  { label: 'Journey', id: 'timeline' },
-  { label: 'Gallery', id: 'gallery' },
-  { label: 'Countdown', id: 'countdown' },
+const navLinks = [
+  { label: "About", href: "#about" },
+  { label: "Gallery", href: "#gallery" },
 ];
 
-const Navbar = () => {
-  const [scrolled, setScrolled] = useState(false);
+export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
 
-  useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 20);
-    window.addEventListener('scroll', onScroll);
-    return () => window.removeEventListener('scroll', onScroll);
-  }, []);
-
-  const scrollTo = (id) => {
-    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
-    setMobileOpen(false);
-  };
+  // Trigger entrance animations only once on mount
+  const [hasMounted, setHasMounted] = useState(false);
+  useEffect(() => setHasMounted(true), []);
 
   return (
-    <motion.nav
-      initial={{ y: -100 }}
-      animate={{ y: 0 }}
-      className={`fixed inset-x-0 top-0 z-50 flex items-center justify-between py-4 px-6 transition-all ${
-        scrolled ? 'bg-white/90 shadow-lg backdrop-blur-md' : 'bg-transparent'
-      }`}
+    <motion.header
+      initial={{ y: -40, opacity: 0 }}
+      animate={hasMounted ? { y: 0, opacity: 1 } : {}}
+      transition={{ duration: 0.5, ease: "easeOut" }}
+      className="fixed top-0 left-0 right-0 z-50 h-[60px] bg-rose-50/95 backdrop-blur-sm shadow-sm"
     >
-      <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-        <a href="#hero" onClick={(e) => { e.preventDefault(); scrollTo('hero'); }}>
-          <span className="text-4xl font-romantic text-rose-gold">Us</span>
-        </a>
-      </motion.div>
-
-      <div className="hidden md:flex gap-8">
-        {navItems.map((item) => (
-          <button
-            key={item.id}
-            onClick={() => scrollTo(item.id)}
-            className="text-rose-gold hover:text-gold transition-colors font-medium relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-gold after:transition-all hover:after:w-full"
+      <div className="flex items-center justify-between px-6 h-full md:px-12">
+        
+        {/* Logo: Scale + Fade */}
+        <motion.a
+          href="/"
+          initial={{ scale: 0.8, opacity: 0 }}
+          animate={hasMounted ? { scale: 1, opacity: 1 } : {}}
+          transition={{ duration: 0.4, ease: "easeOut" }}
+          className="flex items-baseline -space-x-1"
+        >
+          <span
+            className="text-[36px] font-normal text-rose-700"
+            style={{ fontFamily: "'Great Vibes', cursive" }}
           >
-            {item.label}
-          </button>
-        ))}
+            A
+          </span>
+          <span
+            className="text-[36px] font-normal bg-gradient-to-br from-pink-700 to-rose-800 bg-clip-text text-transparent -ml-3"
+            style={{ fontFamily: "'Great Vibes', cursive" }}
+          >
+            J
+          </span>
+          <span
+            className="text-[36px] font-normal text-pink-800"
+            style={{ fontFamily: "'Great Vibes', cursive" }}
+          >
+            M
+          </span>
+        </motion.a>
+
+        {/* Desktop Nav – Staggered Slide In */}
+        <nav className="hidden md:flex items-center gap-8">
+          {navLinks.map((link, i) => (
+            <motion.a
+              key={link.label}
+              href={link.href}
+              initial={{ x: -30, opacity: 0 }}
+              animate={hasMounted ? { x: 0, opacity: 1 } : {}}
+              transition={{
+                delay: 0.3 + i * 0.15, // 0.3s base + 0.15s stagger
+                duration: 0.4,
+                ease: "easeOut",
+              }}
+              className="group relative text-rose-900 hover:text-rose-600 text-lg font-medium"
+              style={{ fontFamily: "'Poppins', sans-serif" }}
+            >
+              {link.label}
+              {/* Underline: expands on hover */}
+              <span className="absolute bottom-[-6px] left-1/2 h-0.5 w-0 bg-rose-500 transition-all duration-200 ease-out group-hover:w-full group-hover:left-0" />
+            </motion.a>
+          ))}
+        </nav>
+
+        {/* Mobile Toggle */}
+        <button
+          onClick={() => setMobileOpen(!mobileOpen)}
+          className="md:hidden text-rose-900 p-2"
+          aria-label="Toggle menu"
+        >
+          {mobileOpen ? <X size={28} /> : <Menu size={28} />}
+        </button>
       </div>
 
-      <button
-        onClick={() => setMobileOpen(!mobileOpen)}
-        className="md:hidden text-rose-gold"
+      {/* Mobile Nav – Slide Down */}
+      <motion.nav
+        initial={false}
+        animate={{
+          height: mobileOpen ? "auto" : 0,
+          opacity: mobileOpen ? 1 : 0,
+        }}
+        transition={{ duration: 0.3, ease: "easeInOut" }}
+        className="md:hidden overflow-hidden"
       >
-        {mobileOpen ? <X size={28} /> : <Menu size={28} />}
-      </button>
-
-      <AnimatePresence>
-        {mobileOpen && (
-          <motion.div
-            initial={{ x: '100%' }}
-            animate={{ x: 0 }}
-            exit={{ x: '100%' }}
-            className="fixed inset-y-0 right-0 w-64 bg-white/95 backdrop-blur-lg shadow-xl flex flex-col items-center justify-center gap-8 z-40"
-          >
-            {navItems.map((item) => (
-              <button
-                key={item.id}
-                onClick={() => scrollTo(item.id)}
-                className="text-2xl text-rose-gold hover:text-gold font-medium"
-              >
-                {item.label}
-              </button>
-            ))}
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </motion.nav>
+        <div className="flex flex-col items-center gap-6 py-6 bg-rose-50/80 backdrop-blur-sm">
+          {navLinks.map((link) => (
+            <a
+              key={link.label}
+              href={link.href}
+              onClick={() => setMobileOpen(false)}
+              className="text-rose-900 hover:text-rose-600 text-lg font-medium"
+              style={{ fontFamily: "'Poppins', sans-serif" }}
+            >
+              {link.label}
+            </a>
+          ))}
+        </div>
+      </motion.nav>
+    </motion.header>
   );
-};
-
-export default Navbar;
+}

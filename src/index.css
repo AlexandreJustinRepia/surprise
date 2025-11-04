@@ -53,3 +53,14 @@ body {
   @apply min-h-screen font-body text-[--color-warm-brown];
   background: linear-gradient(to bottom, #fdf5f3, #c7b6a0);
 }
+
+html {
+  scroll-behavior: smooth;          /* smooth scroll between sections */
+}
+#__next > * {
+  min-height: 100vh;                /* each section = full screen */
+  scroll-snap-align: start;         /* optional snap effect */
+}
+html {
+  scroll-snap-type: y mandatory;    /* enable snap (remove if you don’t want it) */
+}
