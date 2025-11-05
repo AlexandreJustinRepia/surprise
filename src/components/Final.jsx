@@ -3,7 +3,7 @@
 import { motion, useInView } from "framer-motion";
 import { useRef, useState } from "react";
 import { Play, Pause } from "lucide-react";
-import videoFile from "../../public/videos/VID_2.mp4";
+import videoFile from "/videos/VID_2.mp4";
 
 const messageLines = [
   "Every song, every laugh, every small moment",
@@ -25,12 +25,28 @@ export default function Final() {
 
   const handlePlay = () => {
     if (videoRef.current) {
-      videoRef.current.play();
-      setIsPlaying(true);
-      setTimeout(() => setShowOverlay(true), 2000);
+        videoRef.current.play();
+        setIsPlaying(true);
+
+        // Show overlay after 2s
+        setTimeout(() => setShowOverlay(true), 2000);
+
+        // ✅ Auto-scroll to overlay when video reaches midpoint
+        const video = videoRef.current;
+        const onTimeUpdate = () => {
+        if (video.currentTime >= video.duration / 2) {
+            document.getElementById("overlayMessage")?.scrollIntoView({
+            behavior: "smooth",
+            block: "center",
+            });
+            // Remove listener after first scroll
+            video.removeEventListener("timeupdate", onTimeUpdate);
+        }
+        };
+        video.addEventListener("timeupdate", onTimeUpdate);
     }
-  };
-  
+    };
+    
 
   const handlePause = () => {
     if (videoRef.current) {
@@ -144,20 +160,21 @@ export default function Final() {
 
         {/* Post-Play Overlay Message */}
         {showOverlay && (
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, delay: 0.5 }}
-            className="mt-16 text-center"
-          >
-            <p
-              className="text-2xl md:text-3xl text-[#C78888] font-medium italic"
-              style={{ fontFamily: "'Poppins', sans-serif" }}
+            <motion.div
+                id="overlayMessage" // ✅ Add this line
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 1, delay: 0.5 }}
+                className="mt-16 text-center"
             >
-              “No matter where life takes us,<br />
-              I’ll always choose you — in every lifetime.”
-            </p>
-          </motion.div>
+                <p
+                className="text-2xl md:text-3xl text-[#C78888] font-medium italic"
+                style={{ fontFamily: "'Poppins', sans-serif" }}
+                >
+                “No matter where life takes us,<br />
+                I’ll always choose you — in every lifetime.”
+                </p>
+            </motion.div>
         )}
 
         {/* FINAL POP-UP AFTER VIDEO ENDS */}

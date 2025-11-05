@@ -115,6 +115,7 @@ export default function About() {
                 className="w-full h-96 object-cover rounded-xl shadow-lg pointer-events-none"
                 loop
                 muted
+                autoPlay
                 playsInline
             />
             <motion.div
