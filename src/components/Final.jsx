@@ -21,6 +21,7 @@ export default function Final() {
   const [showOverlay, setShowOverlay] = useState(false);
   const [showFinalMessage, setShowFinalMessage] = useState(false); // NEW
   const videoRef = useRef(null);
+  const heartRef = useRef(null);
 
   const handlePlay = () => {
     if (videoRef.current) {
@@ -29,6 +30,7 @@ export default function Final() {
       setTimeout(() => setShowOverlay(true), 2000);
     }
   };
+  
 
   const handlePause = () => {
     if (videoRef.current) {
@@ -41,6 +43,14 @@ export default function Final() {
   const handleVideoEnd = () => {
     setIsPlaying(false);
     setShowFinalMessage(true);
+
+    // Delay the scroll so the heart renders first
+    setTimeout(() => {
+      heartRef.current?.scrollIntoView({
+        behavior: "smooth",
+        block: "center",
+      });
+    }, 800);
   };
 
   return (
@@ -161,6 +171,7 @@ export default function Final() {
               delay: 0.3,
             }}
             className="mt-20 flex flex-col items-center"
+            ref={heartRef} // 💖 Focus target
           >
             {/* Glowing Heart */}
             <motion.div
@@ -173,9 +184,9 @@ export default function Final() {
                 ],
               }}
               transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-              className="text-8xl mb-6"
+              className="text-8xl mb-6 text-rose-600 select-none"
             >
-              heart
+              ❤️
             </motion.div>
 
             {/* Main Message */}
@@ -197,7 +208,7 @@ export default function Final() {
               className="mt-4 text-xl text-rose-600 italic"
               style={{ fontFamily: "'Poppins', sans-serif" }}
             >
-              Forever starts with us. heart
+              I love you, JM ❤️
             </motion.p>
 
             {/* Confetti Sparkles */}
@@ -211,7 +222,7 @@ export default function Final() {
 
 // Confetti Burst Component
 function ConfettiBurst() {
-  const emojis = ["heart", "star", "flower", "sparkles", "rose", "sparkles", "heart", "star"];
+  const emojis = ["❤️", "💖", "🌸", "✨", "🌹", "💞", "💘", "⭐"];
   return (
     <>
       {emojis.map((emoji, i) => (

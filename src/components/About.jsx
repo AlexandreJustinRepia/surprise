@@ -31,7 +31,7 @@ export default function About() {
     <section
         id="about"
         ref={ref}
-        className="relative flex flex-col justify-center min-h-screen py-24 px-6 md:px-12 overflow-hidden"
+        className="relative flex flex-col justify-center min-h-screen py-24 px-6 md:px-12 "
         style={{
         background: "linear-gradient(to bottom, rgba(255, 248, 245, 0.9) 0%, rgba(247, 209, 205, 0.9) 100%)",
         }}
@@ -112,16 +112,15 @@ export default function About() {
         >
             <video
                 src="/videos/Vid_1.mp4" // 🎬 put your actual video path here
-                className="w-full h-96 object-cover rounded-xl shadow-lg"
-                autoPlay
+                className="w-full h-96 object-cover rounded-xl shadow-lg pointer-events-none"
                 loop
                 muted
                 playsInline
             />
             <motion.div
-            className="absolute inset-0 rounded-xl"
-            animate={{ boxShadow: "0 0 30px rgba(255, 105, 180, 0.2)" }}
-            transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+                className="absolute inset-0 rounded-xl pointer-events-none"
+                animate={{ boxShadow: "0 0 30px rgba(255, 105, 180, 0.2)" }}
+                transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
             />
         </motion.div>
         </div>
